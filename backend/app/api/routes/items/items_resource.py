@@ -37,6 +37,7 @@ async def list_items(
     items = await items_repo.filter_items(
         tag=items_filters.tag,
         seller=items_filters.seller,
+        title=items_filters.title,
         favorited=items_filters.favorited,
         limit=items_filters.limit,
         offset=items_filters.offset,
