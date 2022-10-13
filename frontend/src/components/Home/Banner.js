@@ -11,21 +11,22 @@ const SearchBox = (props) => {
         (page) => agent.Items.byTitle(ev.target.value, page),
         agent.Items.byTitle(ev.target.value)
       );
-    }
-    else {
+    } else {
       props.onSearchChanged(
-        '',
-        (page) => agent.Items.byTitle('', page),
-        agent.Items.byTitle('')
+        "",
+        (page) => agent.Items.byTitle("", page),
+        agent.Items.byTitle("")
       );
-
     }
   };
   return (
-      <input id="search-box" placeholder="what is it that you trully desire?" onChange={changeHandler}></input>
-    );
+    <input
+      id="search-box"
+      placeholder="what is it that you trully desire?"
+      onChange={changeHandler}
+    ></input>
+  );
 };
-
 
 const Banner = (props) => {
   return (
@@ -34,7 +35,7 @@ const Banner = (props) => {
         <img src={logo} alt="banner" />
         <div>
           <span id="get-part">A place to get</span>
-          <SearchBox onSearchChanged={props.onSearchChanged}/>
+          <SearchBox onSearchChanged={props.onSearchChanged} />
           <span> the cool stuff.</span>
         </div>
       </div>
