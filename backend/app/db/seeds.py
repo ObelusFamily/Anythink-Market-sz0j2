@@ -10,6 +10,8 @@ from app.db.repositories.items import ItemsRepository
 from app.db.repositories.users import UsersRepository
 from app.models.domain.users import UserInDB
 from app.services.items import get_slug_for_item
+from app.models.domain.items import Item
+from app.db.repositories.comments import CommentsRepository
 
 file_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -65,8 +67,17 @@ mails = [
 ]
 
 
-async def seed_items(con: asyncpg.Connection, users: List[UserInDB]):
+async def seed_comments(con: asyncpg.Connection, users: List[UserInDB], items: List[Item]):
+    comments_repo = CommentsRepository(con)
+    for _ in range(SEED_SIZE):
+        user = random.choice(users)
+        item = random.choice(items)
+        comment = f"This is a {item.title}"
+        await comments_repo.create_comment_for_item(body=comment, item=item, user=user)
+
+async def seed_items(con: asyncpg.Connection, users: List[UserInDB]) -> List[Item]:
     items_repo = ItemsRepository(con)
+    items_db = []
     for title, image_url, tag_list in zip(
         titles[:SEED_SIZE], image_urls[:SEED_SIZE], tags[:SEED_SIZE]
     ):
@@ -81,7 +92,8 @@ async def seed_items(con: asyncpg.Connection, users: List[UserInDB]):
             seller=seller,
             tags=tag_list,
         )
-        print(f"Created {item_in_db}")
+        items_db.append(item_in_db)
+    return items_db
 
 
 async def seed_users(con: asyncpg.Connection) -> List[UserInDB]:
@@ -110,7 +122,8 @@ async def seed_db():
             print("Creating users")
             users_in_db = await seed_users(con=con)
             print(f"Created {len(users_in_db)} users")
-            await seed_items(con=con, users=users_in_db)
+            items_db = await seed_items(con=con, users=users_in_db)
+            await seed_comments(con, users_in_db, items_db)
     finally:
         await pool.close()
 
