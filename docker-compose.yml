@@ -29,7 +29,7 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=3001
-      - REACT_APP_BACKEND_URL=${CODESPACE_BACKEND_URL:-https://anythink-market-sz0j2-api.herokuapp.com/}
+      - REACT_APP_BACKEND_URL=${CODESPACE_BACKEND_URL:-http://localhost:3000}
       - WDS_SOCKET_PORT=${CODESPACE_WDS_SOCKET_PORT:-3001}
     working_dir: /usr/src
     volumes:
