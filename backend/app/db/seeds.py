@@ -16,7 +16,7 @@ file_path = os.path.dirname(os.path.abspath(__file__))
 MAX_SEED_SIZE = 100
 SEED_SIZE = 100
 
-MY_DATABASE_CONNECTION = "postgresql://postgres:@postgres-python:5432/anythink-market"
+MY_DATABASE_CONNECTION = os.environ['DATABASE_URL']
 
 # ITEMS AND TAGS
 tags = [
